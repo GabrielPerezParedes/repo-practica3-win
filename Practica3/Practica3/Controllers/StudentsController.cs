@@ -3,21 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Practica2.Controllers
+namespace Practica3.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[api/students]")]
     public class StudentsController : ControllerBase
     {
-        public StudentsController()
+        private IConfiguration _config;
+        public StudentsController(IConfiguration config)
         {
+            _config = config;
         }
 
         [HttpGet]
         public List<Student> GetStudents()
         {
+            string projectTitle = _config.GetSection("Project").GetSection("Title").Value;
             return new List<Student>()
             {
                 new Student() { Name = "Gabriel", LastName = "Perez"},
@@ -32,13 +36,11 @@ namespace Practica2.Controllers
         }
 
         [HttpPost]
-        public Student CreateStudent([FromBody] String studentName, String studentLastName)
+        public Student CreateStudent([FromBody] Student student)
         {
-            return new Student()
-            {
-                Name = studentName,
-                LastName = studentLastName
-            };
+            return student;
+            Console.Out.WriteLine("A new  Student  was created ");
+
         }
 
         [HttpPut]
@@ -47,6 +49,7 @@ namespace Practica2.Controllers
             student.Name = "updated";
             student.LastName = "updated";
             return student;
+            Console.Out.WriteLine("Student Updated");
         }
 
         [HttpDelete]
@@ -55,6 +58,7 @@ namespace Practica2.Controllers
             student.Name = "deleted";
             student.LastName = "deleted";
             return student;
+            Console.Out.WriteLine("Student Deleted");
         }
     }
 }

@@ -1,6 +1,6 @@
 using System;
 
-namespace Practica2
+namespace Practica3
 {
     public class Student
     {
